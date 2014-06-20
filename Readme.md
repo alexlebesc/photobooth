@@ -1,3 +1,15 @@
-npm install
-bower install
-grunt serve
+# Photobooth
+
+## Install
+
+```sh
+$ npm install
+$ bower install
+```
+
+## Usage
+
+```sh
+$ grunt serve
+```
+
