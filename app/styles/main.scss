@@ -18,77 +18,93 @@ body {
     background-color: #d4593a;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-    padding-left: 15px;
-    padding-right: 15px;
+.picture-frame {
+  width: 260px;
+  height: 320px;
+  background-color: #ffffff;
+  position: absolute;
+  z-index: 60;
+  display:none;
 }
 
-/* Custom page header */
-.header {
-    border-bottom: 1px solid #e5e5e5;
-
-    /* Make the masthead heading the same height as the navigation */
-    h3 {
-        margin-top: 0;
-        margin-bottom: 0;
-        line-height: 40px;
-        padding-bottom: 19px;
-    }
+.picture-frame-1 {
+  background-color: #ceff70;
+  left:40px;
 }
 
-/* Custom page footer */
-.footer {
-    padding-top: 19px;
-    color: #777;
-    border-top: 1px solid #e5e5e5;
+.picture-frame-2 {
+  background-color: #97fffd;
+  left: 340px;
 }
 
-.container-narrow > hr {
-    margin: 30px 0;
+.picture-frame-3 {
+  background-color: #c862ff;
+  left: 640px;
 }
 
-/* Main marketing message and sign up button */
-.jumbotron {
-    text-align: center;
-    border-bottom: 1px solid #e5e5e5;
-    .btn {
-        font-size: 21px;
-        padding: 14px 24px;
-    }
+.picture-frame-4 {
+  background-color: #ff5d96;
+  left: 940px;
 }
 
-/* Supporting marketing content */
-.marketing {
-    margin: 40px 0;
-    p + h4 {
-        margin-top: 28px;
-    }
+
+
+.circle {
+  border-radius: 50%;
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-    .container {
-        max-width: 730px;
-    }
+.circle-home {
+  background-color: #f0ad4e;
+  width: 500px;
+  height: 500px;
+}
 
-    /* Remove the padding we set earlier */
-    .header,
-    .marketing,
-    .footer {
-        padding-left: 0;
-        padding-right: 0;
-    }
+.circle-container {
 
-    /* Space out the masthead */
-    .header {
-        margin-bottom: 30px;
-    }
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  left: 50%;
+  top: 50%;
+  margin: -230px 0 0 -250px;
+  z-index: 50;
 
-    /* Remove the bottom border on the jumbotron for visual effect */
-    .jumbotron {
-        border-bottom: 0;
-    }
+  .circle-content {
+
+      width: 500px;
+      height: 500px;
+
+      .circle-front {
+
+        width: 500px;
+        height: 500px;
+        z-index: 52;
+
+        .front-title {
+            width: 500px;
+            text-align:center;
+            bottom: 80px;
+            position:absolute;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .front-countdown {
+            bottom: -40px;
+            font-size: 400px;
+        }
+
+      }
+
+      .circle-back {
+        width: 500px;
+        height: 500px;
+        z-index: 51;
+      }
+
+
+  }
+
+
+
 }
