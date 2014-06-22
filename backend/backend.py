@@ -1,7 +1,7 @@
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 from shutil import copyfile
 from stat import S_ISREG, ST_CTIME, ST_MODE
-import os, sys, time
+import os, sys, time, subprocess
 
 PORT = 8000
 
@@ -53,6 +53,9 @@ class PhotoBooth:
 
         print "recording"
 
+        # set video ID
+        self.videoId = time.time()
+
         # set status to recording
         self.status = self.STATUS_RECORDING;
 
@@ -82,14 +85,15 @@ class PhotoBooth:
         self.goproModeUSB()
 
         # copy last video to directory
-        self.copyVideo();
+        video = self.copyVideo();
 
         # remove last video from gopro directory
-        self.removeGoproVideo();
+        if (video):
+            self.removeGoproVideo();
 
-        cutTiming = [1,2,3,4]
-        for timing in cutTiming:
-            self.cutPicture(timing)
+            cutTiming = [1,2,3,4]
+            for timing in cutTiming:
+                self.cutPicture(video, timing)
 
         # set status to ready
         self.status = self.STATUS_READY;
@@ -127,6 +131,7 @@ class PhotoBooth:
         if (video):
             # copy last video in computer directory
             copyfile(video, videoDir + '/' + os.path.basename(video) )
+            return videoDir + '/' + os.path.basename(video)
 
         return
 
@@ -160,8 +165,12 @@ class PhotoBooth:
 
         return
 
-    def cutPicture(self, timing):
+    def cutPicture(self, video, timing):
         print "cut picture at",timing, "sec"
+        image = os.path.dirname(os.path.realpath(__file__)) + '/images/' + str(self.videoId) + '_' + str(timing) + '.jpeg'
+        command = 'ffmpeg -i ' + video +  ' -ss ' + str(timing) + ' -t 00:00:1 -r 1 -qscale:v 1 ' + image
+
+        subprocess.call(command, shell=True)
 
         return
 
