@@ -51,6 +51,14 @@ class Gopro:
 
         return
 
+    def stopSilent(self):
+        print "stop silent gopro"
+
+        # stop
+        self.status = self.STATUS_OFF
+
+        return
+
     def cleanup(self):
         print "clean gopro"
         GPIO.cleanup()
@@ -64,6 +72,7 @@ class Gopro:
         time.sleep(1)
         GPIO.output(self.MODE_BTN, True)
         print(GPIO.input(self.MODE_BTN))
+        time.sleep(2)
 
     def turnoff(self):
         print(GPIO.input(self.MODE_BTN))
@@ -72,6 +81,7 @@ class Gopro:
         time.sleep(3)
         GPIO.output(self.MODE_BTN, True)
         print(GPIO.input(self.MODE_BTN))
+        time.sleep(2)
 
 class GoproServer(HTTPServer):
 
@@ -106,6 +116,9 @@ class GoproHandler(BaseHTTPRequestHandler):
 
         if (self.path == '/gopro/stop' and status == gopro.STATUS_ON):
             gopro.stop()
+
+        if (self.path == '/gopro/stop_silent' and status == gopro.STATUS_ON):
+            gopro.stopSilent()
 
         self.send_response(200)
         self.send_header('Content-type','text/html')

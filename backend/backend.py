@@ -40,6 +40,9 @@ class PhotoBooth:
         # set camera mode to camera
         self.goproModeCamera()
 
+        # start camera
+        self.startCamera()
+
         # wait count down time
         time.sleep(countDownTime)
 
@@ -58,9 +61,6 @@ class PhotoBooth:
 
         # set status to recording
         self.status = self.STATUS_RECORDING;
-
-        # start camera
-        self.startCamera()
 
         # wait recording time
         time.sleep(recordingTime)
@@ -103,20 +103,45 @@ class PhotoBooth:
     def startCamera(self):
         print "start camera"
 
+        command = 'curl  http://192.168.33.20:8000/gopro/start'
+
+        subprocess.call(command, shell=True)
+
         return
 
     def stopCamera(self):
         print "stop camera"
 
+        command1 = 'curl  http://192.168.33.20:8000/gopro/stop'
+
+        subprocess.call(command1, shell=True)
+
         return
 
     def goproModeCamera(self):
         print "gopro mode camera"
+        currentDir =  os.path.dirname(os.path.realpath(__file__))
+
+        command1 = 'curl  http://192.168.33.20:8000/gopro/stop_silent'
+        command2 = 'sudo ' + currentDir + '/modeStorage_stop.sh'
+        command3 = 'sudo ' + currentDir + '/modeCamera.sh'
+
+        subprocess.call(command1, shell=True)
+        subprocess.call(command2, shell=True)
+        subprocess.call(command3, shell=True)
+        time.sleep(5)
 
         return
 
     def goproModeUSB(self):
         print "gopro mode USB"
+        currentDir =  os.path.dirname(os.path.realpath(__file__))
+
+        command1 = 'sudo ' + currentDir + '/modeStorage_start.sh'
+        subprocess.call(command1, shell=True)
+
+        self.startCamera()
+        time.sleep(3)
 
         return
 
@@ -161,7 +186,13 @@ class PhotoBooth:
         # find last video in gopro directory
         # remove last video from gopro directory
         video = self.findLastVideo()
+        videoLRV = video.replace('.MP4', '.LRV')
+        videoTHM = video.replace('.MP4', '.THM')
+
         print 'remove',video
+        os.remove(video)
+        os.remove(videoLRV)
+        os.remove(videoTHM)
 
         return
 
@@ -171,6 +202,11 @@ class PhotoBooth:
         command = 'ffmpeg -i ' + video +  ' -ss ' + str(timing) + ' -t 00:00:1 -r 1 -qscale:v 1 ' + image
 
         subprocess.call(command, shell=True)
+
+        return
+
+    def cleanup(self):
+        print "clean backend"
 
         return
 
