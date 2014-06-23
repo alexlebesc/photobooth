@@ -2,7 +2,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 from shutil import copyfile
 from stat import S_ISREG, ST_CTIME, ST_MODE
 import os, sys, time, subprocess, signal
-import Rpi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 PORT = 8000
 
@@ -21,8 +21,8 @@ class Gopro:
     def __init__(self):
         self.status = self.STATUS_OFF
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(MODE_BTN,  GPIO.OUT, initial=GPIO.HIGH)
-        GPIO.setup(STATUS_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(self.MODE_BTN,  GPIO.OUT, initial=GPIO.HIGH)
+        GPIO.setup(self.STATUS_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     def getStatus(self):
         return self.status
@@ -58,20 +58,20 @@ class Gopro:
         return
 
     def turnon(self):
-        print(GPIO.input(MODE_BTN))
-        GPIO.output(MODE_BTN, False)
-        print(GPIO.input(MODE_BTN))
-        sleep(1)
-        GPIO.output(MODE_BTN, True)
-        print(GPIO.input(MODE_BTN))
+        print(GPIO.input(self.MODE_BTN))
+        GPIO.output(self.MODE_BTN, False)
+        print(GPIO.input(self.MODE_BTN))
+        time.sleep(1)
+        GPIO.output(self.MODE_BTN, True)
+        print(GPIO.input(self.MODE_BTN))
 
     def turnoff(self):
-        print(GPIO.input(MODE_BTN))
-        GPIO.output(MODE_BTN, False)
-        print(GPIO.input(MODE_BTN))
-        sleep(3)
-        GPIO.output(MODE_BTN, True)
-        print(GPIO.input(MODE_BTN))
+        print(GPIO.input(self.MODE_BTN))
+        GPIO.output(self.MODE_BTN, False)
+        print(GPIO.input(self.MODE_BTN))
+        time.sleep(3)
+        GPIO.output(self.MODE_BTN, True)
+        print(GPIO.input(self.MODE_BTN))
 
 class GoproServer(HTTPServer):
 
