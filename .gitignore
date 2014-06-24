@@ -4,3 +4,5 @@ static/.tmp
 static/.sass-cache
 static/bower_components
 static/test/bower_components
+express/node_modules
+express/public/components
