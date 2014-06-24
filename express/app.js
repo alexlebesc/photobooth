@@ -6,8 +6,10 @@
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
+  , photobooth = require('./routes/photobooth')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , fs = require('fs');
 
 var app = express();
 
@@ -21,14 +23,25 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, '../static/dist')));
-  //app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/users', user.list);
+app.get('/photobooth', function(res, req) {
+
+    var value = 'READY' 
+        
+    fs.readFile(__dirname + '/../backend/status', 'utf8', function(err, data) {
+        if (data) {
+            value = data.trim();
+        }
+
+        photobooth.status(res, req, value);
+    });
+
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

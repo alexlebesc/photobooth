@@ -1,15 +1,20 @@
 
-var status = 'ready';
+var STATUS_READY = 'READY';
+var STATUS_COUNTDOWN = 'COUNTDOWN';
+var STATUS_RECORDING = 'RECORDING';
+var STATUS_PROCESSING = 'PROCESSING';
+var status = STATUS_READY;
 
 function getStatus() {
     // check status
-//    $.ajax({
-//        url: 'status.txt',
-//        async: false,
-//        success: function(data) {
-//            status = data;
-//        }
-//    });
+    $.ajax({
+        url: '/photobooth',
+        async: false,
+        type: 'JSON',
+        success: function(data) {
+            status = data;
+        }
+    });
 
     return status;
 }
@@ -33,13 +38,13 @@ function getStatus() {
         },
 
         goToCountDown: function() {
-            if(getStatus() == 'ready') {
+            if(getStatus() == STATUS_READY) {
                 this.vent.trigger("countdown")
             }
         },
 
         render: function() {
-            status = 'ready';
+            status = STATUS_READY;
             $(this.el).html(this.template());
         }
     });
@@ -58,7 +63,7 @@ function getStatus() {
         },
 
         render: function() {
-            status = 'countdown';
+            status = STATUS_COUNTDOWN;
 
             $(this.el).html(this.template());
 
@@ -95,7 +100,7 @@ function getStatus() {
         },
 
         render: function() {
-            status = 'recording';
+            status = STATUS_RECORDING;
 
             var pictureId = 0;
 
@@ -130,7 +135,7 @@ function getStatus() {
         },
 
         render: function() {
-            status = 'processing';
+            status = STATUS_PROCESSING;
 
             setTimeout(function() {
                 vent.trigger('ready');
@@ -149,13 +154,12 @@ function getStatus() {
 
     $(document).on('click', function() {
 
-        if (getStatus() == 'ready') {
+        if (getStatus() == STATUS_READY) {
             vent.trigger('countdown');
             return;
         }
 
     });
-
 
 
 })(jQuery);
